@@ -36,7 +36,12 @@ fun ClimaNavigation() {
         }
 
         composable(Routes.Busqueda.route) {
-            BusquedaScreen()
+            BusquedaScreen(
+                onCiudadClick = {
+                    navController.navigate(Routes.Detalle.route)
+                }
+            )
+
         }
 
         composable(Routes.Detalle.route) {

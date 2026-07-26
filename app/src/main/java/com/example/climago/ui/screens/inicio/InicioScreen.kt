@@ -9,7 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.climago.ui.theme.ClimaGoTheme
 
 @Composable
 fun InicioScreen(
@@ -32,16 +34,38 @@ fun InicioScreen(
 
         Text(text = "Parcialmente nublado")
 
-        Button(onClick = onBuscarClick) {
+        Button(
+            onClick = onBuscarClick
+        ) {
             Text(text = "Buscar ciudad")
         }
 
-        Button(onClick = onFavoritosClick) {
+        Button(
+            onClick = onFavoritosClick
+        ) {
             Text(text = "Ver favoritos")
         }
 
-        Button(onClick = onConfiguracionClick) {
+        Button(
+            onClick = onConfiguracionClick
+        ) {
             Text(text = "Configuración")
         }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Pantalla de inicio"
+)
+@Composable
+private fun InicioScreenPreview() {
+    ClimaGoTheme {
+        InicioScreen(
+            onBuscarClick = {},
+            onFavoritosClick = {},
+            onConfiguracionClick = {}
+        )
     }
 }
