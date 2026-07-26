@@ -8,10 +8,21 @@ interface WeatherApiService {
 
     @GET("v1/forecast")
     suspend fun obtenerClima(
-        @Query("latitude") latitud: Double,
-        @Query("longitude") longitud: Double,
-        @Query("current") variablesActuales: String,
-        @Query("daily") variablesDiarias: String,
-        @Query("timezone") zonaHoraria: String
+        @Query("latitude")
+        latitud: Double,
+
+        @Query("longitude")
+        longitud: Double,
+
+        @Query("current")
+        climaActual: String =
+            "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m",
+
+        @Query("daily")
+        pronosticoDiario: String =
+            "weather_code,temperature_2m_max,temperature_2m_min",
+
+        @Query("timezone")
+        zonaHoraria: String = "auto"
     ): WeatherResponseDto
 }

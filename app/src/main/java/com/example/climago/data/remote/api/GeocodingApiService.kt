@@ -8,9 +8,16 @@ interface GeocodingApiService {
 
     @GET("v1/search")
     suspend fun buscarCiudades(
-        @Query("name") nombre: String,
-        @Query("count") cantidad: Int,
-        @Query("language") idioma: String,
-        @Query("format") formato: String
+        @Query("name")
+        nombre: String,
+
+        @Query("count")
+        cantidad: Int = 10,
+
+        @Query("language")
+        idioma: String = "es",
+
+        @Query("format")
+        formato: String = "json"
     ): GeocodingResponseDto
 }

@@ -1,7 +1,7 @@
 package com.example.climago.data.remote.dto
 
 data class GeocodingResponseDto(
-    val results: List<GeocodingResultDto>? = null
+    val results: List<CiudadDto>? = null
 )
 
 data class GeocodingResultDto(

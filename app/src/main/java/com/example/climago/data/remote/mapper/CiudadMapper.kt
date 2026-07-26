@@ -7,9 +7,11 @@ fun CiudadDto.toDomain(): Ciudad {
     return Ciudad(
         id = id,
         nombre = name,
-        pais = country ?: "País no disponible",
-        region = admin1 ?: "Región no disponible",
         latitud = latitude,
-        longitud = longitude
+        longitud = longitude,
+        codigoPais = countryCode.orEmpty(),
+        pais = country.orEmpty(),
+        region = admin1.orEmpty(),
+        zonaHoraria = timezone.orEmpty()
     )
 }
