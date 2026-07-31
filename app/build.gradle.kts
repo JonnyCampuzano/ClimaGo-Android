@@ -44,6 +44,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.datastore:datastore-preferences:1.2.1")
+
     // ==========================================
     // Componentes principales de Android
     // ==========================================

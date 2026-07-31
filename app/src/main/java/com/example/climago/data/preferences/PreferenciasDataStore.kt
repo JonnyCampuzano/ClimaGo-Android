@@ -8,12 +8,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 private val Context.dataStore by preferencesDataStore(
-    name = "preferencias_usuario"
+    name = "preferencias_climago"
 )
 
 class PreferenciasDataStore(
     private val context: Context
 ) {
+
     companion object {
         private val MODO_OSCURO =
             booleanPreferencesKey("modo_oscuro")
@@ -21,11 +22,15 @@ class PreferenciasDataStore(
 
     val modoOscuro: Flow<Boolean> =
         context.dataStore.data.map { preferencias ->
+
             preferencias[MODO_OSCURO] ?: false
         }
 
-    suspend fun guardarModoOscuro(activado: Boolean) {
+    suspend fun guardarModoOscuro(
+        activado: Boolean
+    ) {
         context.dataStore.edit { preferencias ->
+
             preferencias[MODO_OSCURO] = activado
         }
     }

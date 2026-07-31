@@ -1,25 +1,38 @@
 package com.example.climago.ui.screens.configuracion
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.climago.data.preferences.PreferenciasDataStore
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ConfiguracionViewModel(
-    private val preferenciasDataStore: PreferenciasDataStore
-) : ViewModel() {
+    application: Application
+) : AndroidViewModel(application) {
 
-    val modoOscuro = preferenciasDataStore.modoOscuro.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = false
-    )
+    private val preferenciasDataStore =
+        PreferenciasDataStore(application.applicationContext)
 
-    fun cambiarModoOscuro(activado: Boolean) {
+    val modoOscuro: StateFlow<Boolean> =
+        preferenciasDataStore.modoOscuro.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(
+                stopTimeoutMillis = 5_000
+            ),
+            initialValue = false
+        )
+
+    fun cambiarModoOscuro(
+        activado: Boolean
+    ) {
         viewModelScope.launch {
-            preferenciasDataStore.guardarModoOscuro(activado)
+
+            preferenciasDataStore.guardarModoOscuro(
+                activado
+            )
         }
     }
 }
