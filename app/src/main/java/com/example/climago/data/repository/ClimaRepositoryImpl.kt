@@ -1,8 +1,8 @@
 package com.example.climago.data.repository
 
+import com.example.climago.data.mapper.toDomain
 import com.example.climago.data.remote.api.GeocodingApiService
 import com.example.climago.data.remote.api.WeatherApiService
-import com.example.climago.data.remote.mapper.toDomain as climaToDomain
 import com.example.climago.domain.model.Ciudad
 import com.example.climago.domain.model.Clima
 import com.example.climago.domain.repository.ClimaRepository
@@ -22,23 +22,13 @@ class ClimaRepositoryImpl(
             val ciudades: List<Ciudad> = respuesta.results
                 .orEmpty()
                 .map { ciudadDto ->
-
-                    Ciudad(
-                        id = ciudadDto.id,
-                        nombre = ciudadDto.name,
-                        latitud = ciudadDto.latitude,
-                        longitud = ciudadDto.longitude,
-                        codigoPais = ciudadDto.countryCode.orEmpty(),
-                        pais = ciudadDto.country.orEmpty(),
-                        region = ciudadDto.admin1.orEmpty(),
-                        zonaHoraria = ciudadDto.timezone.orEmpty()
-                    )
+                    ciudadDto.toDomain()
                 }
 
             Result.success(ciudades)
 
-        } catch (exception: Exception) {
-            Result.failure(exception)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
@@ -49,16 +39,16 @@ class ClimaRepositoryImpl(
         return try {
 
             val respuesta = weatherApi.obtenerClima(
-                latitud = latitud,
-                longitud = longitud
+                latitud,
+                longitud
             )
 
-            val clima = respuesta.climaToDomain()
+            val clima = respuesta.toDomain()
 
             Result.success(clima)
 
-        } catch (exception: Exception) {
-            Result.failure(exception)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }

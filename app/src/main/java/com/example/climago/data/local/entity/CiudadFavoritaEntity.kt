@@ -9,6 +9,7 @@ data class CiudadFavoritaEntity(
     val id: Int = 0,
     val nombre: String,
     val pais: String,
+    val region: String,
     val latitud: Double,
     val longitud: Double
 )

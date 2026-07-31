@@ -7,7 +7,7 @@ import com.example.climago.data.local.entity.CiudadFavoritaEntity
 
 @Database(
     entities = [CiudadFavoritaEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class ClimaDatabase : RoomDatabase() {

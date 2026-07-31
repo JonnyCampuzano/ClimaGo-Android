@@ -6,5 +6,6 @@ data class Clima(
     val humedad: Int,
     val precipitacion: Double,
     val codigoClima: Int,
-    val velocidadViento: Double
+    val velocidadViento: Double,
+    val descripcion: Any
 )

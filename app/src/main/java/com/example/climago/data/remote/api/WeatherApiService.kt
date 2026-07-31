@@ -15,12 +15,14 @@ interface WeatherApiService {
         longitud: Double,
 
         @Query("current")
-        climaActual: String =
-            "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m",
+        current: String =
+            "temperature_2m,relative_humidity_2m,apparent_temperature," +
+                    "precipitation,weather_code,wind_speed_10m",
 
         @Query("daily")
-        pronosticoDiario: String =
-            "weather_code,temperature_2m_max,temperature_2m_min",
+        daily: String =
+            "weather_code,temperature_2m_max,temperature_2m_min," +
+                    "precipitation_sum",
 
         @Query("timezone")
         zonaHoraria: String = "auto"

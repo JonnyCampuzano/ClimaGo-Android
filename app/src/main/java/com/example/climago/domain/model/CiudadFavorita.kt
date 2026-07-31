@@ -1,7 +1,7 @@
 package com.example.climago.domain.model
 
-data class Ciudad(
-    val id: Long,
+data class CiudadFavorita(
+    val id: Int = 0,
     val nombre: String,
     val pais: String,
     val region: String,
