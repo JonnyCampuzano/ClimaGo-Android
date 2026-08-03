@@ -5,31 +5,69 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
+    /*
+    |--------------------------------------------------------------------------
+    | DIRECCIONES BASE DE LAS API
+    |--------------------------------------------------------------------------
+    */
+
     private const val WEATHER_BASE_URL =
         "https://api.open-meteo.com/"
 
     private const val GEOCODING_BASE_URL =
         "https://geocoding-api.open-meteo.com/"
 
+    /*
+    |--------------------------------------------------------------------------
+    | RETROFIT PARA EL CLIMA
+    |--------------------------------------------------------------------------
+    */
+
     private val weatherRetrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(WEATHER_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(
+                GsonConverterFactory.create()
+            )
             .build()
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RETROFIT PARA BUSCAR CIUDADES
+    |--------------------------------------------------------------------------
+    */
 
     private val geocodingRetrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(GEOCODING_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(
+                GsonConverterFactory.create()
+            )
             .build()
     }
 
-    val weatherApi: WeatherApiService by lazy {
-        weatherRetrofit.create(WeatherApiService::class.java)
+    /*
+    |--------------------------------------------------------------------------
+    | SERVICIO DE CLIMA
+    |--------------------------------------------------------------------------
+    */
+
+    val weatherApiService: WeatherApiService by lazy {
+        weatherRetrofit.create(
+            WeatherApiService::class.java
+        )
     }
 
-    val geocodingApi: GeocodingApiService by lazy {
-        geocodingRetrofit.create(GeocodingApiService::class.java)
+    /*
+    |--------------------------------------------------------------------------
+    | SERVICIO DE BÚSQUEDA DE CIUDADES
+    |--------------------------------------------------------------------------
+    */
+
+    val geocodingApiService: GeocodingApiService by lazy {
+        geocodingRetrofit.create(
+            GeocodingApiService::class.java
+        )
     }
 }
