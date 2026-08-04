@@ -15,20 +15,13 @@ class ClimaRepositoryImpl(
     private val remoteDataSource: ClimaRemoteDataSource
 ) : ClimaRepository {
 
-    /*
-    |--------------------------------------------------------------------------
-    | BUSCAR CIUDADES
-    |--------------------------------------------------------------------------
-    */
-
     override suspend fun buscarCiudades(
         nombre: String
     ): Result<List<Ciudad>> {
-
         return try {
             val nombreLimpio = nombre.trim()
 
-            if (nombreLimpio.isEmpty()) {
+            if (nombreLimpio.isBlank()) {
                 return Result.success(emptyList())
             }
 
@@ -48,17 +41,10 @@ class ClimaRepositoryImpl(
         }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | OBTENER CLIMA
-    |--------------------------------------------------------------------------
-    */
-
     override suspend fun obtenerClima(
         latitud: Double,
         longitud: Double
     ): Result<Clima> {
-
         return try {
             val respuesta = remoteDataSource.obtenerClima(
                 latitud = latitud,
@@ -74,16 +60,12 @@ class ClimaRepositoryImpl(
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | FAVORITOS
-    |--------------------------------------------------------------------------
-    |
-    | Estas implementaciones permiten que el proyecto compile.
-    | Después se conectarán con Room.
-    |
-    */
+     * Implementaciones temporales para que compile.
+     * Después se conectarán con Room.
+     */
 
-    override fun observarFavoritas(): Flow<List<CiudadFavorita>> {
+    override fun observarFavoritas():
+            Flow<List<CiudadFavorita>> {
         return flowOf(emptyList())
     }
 
@@ -97,36 +79,41 @@ class ClimaRepositoryImpl(
     override suspend fun guardarFavorita(
         ciudad: CiudadFavorita
     ) {
-        // Pendiente: guardar usando Room.
+        // Pendiente de conectar con Room.
     }
 
     override suspend fun eliminarFavorita(
         id: Int
     ) {
-        // Pendiente: eliminar usando Room.
+        // Pendiente de conectar con Room.
     }
 
     override suspend fun eliminarFavoritaPorCoordenadas(
         latitud: Double,
         longitud: Double
     ) {
-        // Pendiente: eliminar usando Room.
+        // Pendiente de conectar con Room.
     }
 
+    /*
+     * Implementaciones temporales para que compile.
+     * Después se conectarán con DataStore.
+     */
 
-    override fun observarPreferencias(): Flow<PreferenciasUsuario> {
+    override fun observarPreferencias():
+            Flow<PreferenciasUsuario> {
         return emptyFlow()
     }
 
     override suspend fun cambiarModoOscuro(
         activado: Boolean
     ) {
-        // Pendiente: guardar preferencia usando DataStore.
+        // Pendiente de conectar con DataStore.
     }
 
     override suspend fun cambiarFahrenheit(
         activado: Boolean
     ) {
-        // Pendiente: guardar preferencia usando DataStore.
+        // Pendiente de conectar con DataStore.
     }
 }

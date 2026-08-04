@@ -5,23 +5,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    /*
-    |--------------------------------------------------------------------------
-    | DIRECCIONES BASE DE LAS API
-    |--------------------------------------------------------------------------
-    */
-
     private const val WEATHER_BASE_URL =
         "https://api.open-meteo.com/"
 
     private const val GEOCODING_BASE_URL =
         "https://geocoding-api.open-meteo.com/"
-
-    /*
-    |--------------------------------------------------------------------------
-    | RETROFIT PARA EL CLIMA
-    |--------------------------------------------------------------------------
-    */
 
     private val weatherRetrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -32,12 +20,6 @@ object RetrofitClient {
             .build()
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | RETROFIT PARA BUSCAR CIUDADES
-    |--------------------------------------------------------------------------
-    */
-
     private val geocodingRetrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(GEOCODING_BASE_URL)
@@ -47,23 +29,11 @@ object RetrofitClient {
             .build()
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | SERVICIO DE CLIMA
-    |--------------------------------------------------------------------------
-    */
-
     val weatherApiService: WeatherApiService by lazy {
         weatherRetrofit.create(
             WeatherApiService::class.java
         )
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SERVICIO DE BÚSQUEDA DE CIUDADES
-    |--------------------------------------------------------------------------
-    */
 
     val geocodingApiService: GeocodingApiService by lazy {
         geocodingRetrofit.create(

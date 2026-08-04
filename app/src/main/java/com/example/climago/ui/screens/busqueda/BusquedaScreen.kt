@@ -19,42 +19,61 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.climago.data.repository.RepositoryProvider
+import com.example.climago.ClimaGoApplication
 import com.example.climago.domain.model.Ciudad
 
 @Composable
 fun BusquedaScreen(
     onCiudadClick: (Ciudad) -> Unit
 ) {
-    val factory = BusquedaViewModelFactory(
-        repository = RepositoryProvider.climaRepository
-    )
+    val context = LocalContext.current
+
+    val application = context.applicationContext
+            as ClimaGoApplication
+
+    val factory = remember(application) {
+        BusquedaViewModelFactory(
+            repository =
+                application.container.climaRepository
+        )
+    }
 
     val viewModel: BusquedaViewModel = viewModel(
         factory = factory
     )
 
-    val texto by viewModel.textoBusqueda.collectAsState()
-    val estado by viewModel.uiState.collectAsState()
+    val texto by
+    viewModel.textoBusqueda.collectAsState()
+
+    val estado by
+    viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement =
+            Arrangement.spacedBy(12.dp)
     ) {
-        Text(text = "Buscar ciudad")
+        Text(
+            text = "Buscar ciudad"
+        )
 
         OutlinedTextField(
             value = texto,
-            onValueChange = viewModel::actualizarTexto,
+            onValueChange =
+                viewModel::actualizarTexto,
             modifier = Modifier.fillMaxWidth(),
             label = {
-                Text(text = "Nombre de la ciudad")
+                Text(
+                    text = "Nombre de la ciudad"
+                )
             },
             singleLine = true
         )
@@ -63,21 +82,25 @@ fun BusquedaScreen(
             onClick = viewModel::buscarCiudades,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Buscar")
+            Text(
+                text = "Buscar"
+            )
         }
 
         when (val resultado = estado) {
 
             BusquedaUiState.Inicial -> {
                 Text(
-                    text = "Escribe una ciudad para comenzar."
+                    text =
+                        "Escribe una ciudad para comenzar."
                 )
             }
 
             BusquedaUiState.Cargando -> {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment =
+                        Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
@@ -86,16 +109,21 @@ fun BusquedaScreen(
             is BusquedaUiState.Exito -> {
                 if (resultado.ciudades.isEmpty()) {
                     Text(
-                        text = "No se encontraron ciudades."
+                        text =
+                            "No se encontraron ciudades."
                     )
                 } else {
                     LazyColumn(
+                        modifier =
+                            Modifier.fillMaxWidth(),
                         verticalArrangement =
                             Arrangement.spacedBy(8.dp)
                     ) {
                         items(
                             items = resultado.ciudades,
-                            key = { ciudad -> ciudad.id }
+                            key = { ciudad ->
+                                ciudad.id
+                            }
                         ) { ciudad ->
                             CiudadItem(
                                 ciudad = ciudad,
@@ -109,7 +137,9 @@ fun BusquedaScreen(
             }
 
             is BusquedaUiState.Error -> {
-                Text(text = resultado.mensaje)
+                Text(
+                    text = resultado.mensaje
+                )
             }
         }
     }
@@ -123,30 +153,39 @@ private fun CiudadItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(
+                onClick = onClick
+            )
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalArrangement =
+                Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = ciudad.nombre)
+            Text(
+                text = ciudad.nombre
+            )
 
             HorizontalDivider()
 
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier =
+                    Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "${ciudad.region}, ${ciudad.pais}"
+                    text =
+                        "${ciudad.region}, ${ciudad.pais}"
                 )
             }
 
             Text(
-                text = "Latitud: ${ciudad.latitud}"
+                text =
+                    "Latitud: ${ciudad.latitud}"
             )
 
             Text(
-                text = "Longitud: ${ciudad.longitud}"
+                text =
+                    "Longitud: ${ciudad.longitud}"
             )
         }
     }
