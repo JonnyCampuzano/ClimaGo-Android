@@ -12,33 +12,35 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.climago.ClimaGoApplication
+import com.example.climago.domain.model.CiudadFavorita
 import com.example.climago.ui.domain.models.WeatherCodeMapper
 
 @Composable
 fun DetalleScreen(
     nombreCiudad: String,
+    pais: String,
+    region: String,
     latitud: Double,
     longitud: Double
 ) {
     /*
     |--------------------------------------------------------------------------
-    | OBTENER EL REPOSITORIO DESDE APP CONTAINER
+    | OBTENER LA APLICACIÓN
     |--------------------------------------------------------------------------
     */
 
     val context = LocalContext.current
 
-    val application = context.applicationContext
-            as ClimaGoApplication
+    val application = context.applicationContext as ClimaGoApplication
 
     /*
     |--------------------------------------------------------------------------
@@ -64,11 +66,14 @@ fun DetalleScreen(
 
     /*
     |--------------------------------------------------------------------------
-    | OBSERVAR EL ESTADO
+    | OBSERVAR LOS ESTADOS
     |--------------------------------------------------------------------------
     */
 
-    val estado by viewModel.uiState.collectAsState()
+    val estado by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val esFavorita by viewModel.esFavorita
+        .collectAsStateWithLifecycle()
 
     /*
     |--------------------------------------------------------------------------
@@ -105,6 +110,7 @@ fun DetalleScreen(
             }
 
             is DetalleUiState.Exito -> {
+
                 val clima = resultado.clima
 
                 val descripcionClima =
@@ -124,6 +130,18 @@ fun DetalleScreen(
                             text = nombreCiudad
                         )
 
+                        if (region.isNotBlank()) {
+                            Text(
+                                text = "Región: $region"
+                            )
+                        }
+
+                        if (pais.isNotBlank()) {
+                            Text(
+                                text = "País: $pais"
+                            )
+                        }
+
                         Text(
                             text = "${clima.temperatura} °C"
                         )
@@ -138,8 +156,7 @@ fun DetalleScreen(
                         )
 
                         Text(
-                            text = "Humedad: " +
-                                    "${clima.humedad}%"
+                            text = "Humedad: ${clima.humedad}%"
                         )
 
                         Text(
@@ -151,6 +168,35 @@ fun DetalleScreen(
                             text = "Viento: " +
                                     "${clima.velocidadViento} km/h"
                         )
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | BOTÓN DE FAVORITOS
+                        |--------------------------------------------------------------------------
+                        */
+
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                viewModel.cambiarFavorita(
+                                    CiudadFavorita(
+                                        nombre = nombreCiudad,
+                                        pais = pais,
+                                        region = region,
+                                        latitud = latitud,
+                                        longitud = longitud
+                                    )
+                                )
+                            }
+                        ) {
+                            Text(
+                                text = if (esFavorita) {
+                                    "Eliminar de favoritos"
+                                } else {
+                                    "Guardar en favoritos"
+                                }
+                            )
+                        }
                     }
                 }
             }

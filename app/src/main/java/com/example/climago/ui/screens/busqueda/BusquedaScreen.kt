@@ -34,13 +34,12 @@ fun BusquedaScreen(
 ) {
     val context = LocalContext.current
 
-    val application = context.applicationContext
-            as ClimaGoApplication
+    val application =
+        context.applicationContext as ClimaGoApplication
 
     val factory = remember(application) {
         BusquedaViewModelFactory(
-            repository =
-                application.container.climaRepository
+            repository = application.container.climaRepository
         )
     }
 
@@ -48,18 +47,14 @@ fun BusquedaScreen(
         factory = factory
     )
 
-    val texto by
-    viewModel.textoBusqueda.collectAsState()
-
-    val estado by
-    viewModel.uiState.collectAsState()
+    val texto by viewModel.textoBusqueda.collectAsState()
+    val estado by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement =
-            Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
             text = "Buscar ciudad"
@@ -67,8 +62,7 @@ fun BusquedaScreen(
 
         OutlinedTextField(
             value = texto,
-            onValueChange =
-                viewModel::actualizarTexto,
+            onValueChange = viewModel::actualizarTexto,
             modifier = Modifier.fillMaxWidth(),
             label = {
                 Text(
@@ -80,7 +74,8 @@ fun BusquedaScreen(
 
         Button(
             onClick = viewModel::buscarCiudades,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = texto.isNotBlank()
         ) {
             Text(
                 text = "Buscar"
@@ -91,16 +86,14 @@ fun BusquedaScreen(
 
             BusquedaUiState.Inicial -> {
                 Text(
-                    text =
-                        "Escribe una ciudad para comenzar."
+                    text = "Escribe una ciudad para comenzar."
                 )
             }
 
             BusquedaUiState.Cargando -> {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment =
-                        Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
@@ -109,13 +102,11 @@ fun BusquedaScreen(
             is BusquedaUiState.Exito -> {
                 if (resultado.ciudades.isEmpty()) {
                     Text(
-                        text =
-                            "No se encontraron ciudades."
+                        text = "No se encontraron ciudades."
                     )
                 } else {
                     LazyColumn(
-                        modifier =
-                            Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         verticalArrangement =
                             Arrangement.spacedBy(8.dp)
                     ) {
@@ -159,8 +150,7 @@ private fun CiudadItem(
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement =
-                Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
                 text = ciudad.nombre
@@ -169,23 +159,23 @@ private fun CiudadItem(
             HorizontalDivider()
 
             Row(
-                modifier =
-                    Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text =
-                        "${ciudad.region}, ${ciudad.pais}"
+                    text = ciudad.region.ifBlank {
+                        "Sin región"
+                    } + ", " + ciudad.pais.ifBlank {
+                        "Sin país"
+                    }
                 )
             }
 
             Text(
-                text =
-                    "Latitud: ${ciudad.latitud}"
+                text = "Latitud: ${ciudad.latitud}"
             )
 
             Text(
-                text =
-                    "Longitud: ${ciudad.longitud}"
+                text = "Longitud: ${ciudad.longitud}"
             )
         }
     }

@@ -6,17 +6,17 @@ sealed class Routes(val route: String) {
 
     data object Busqueda : Routes("busqueda")
 
-    data object Detalle :
-        Routes(
-            "detalle/{nombre}/{latitud}/{longitud}"
-        ) {
-
+    object Detalle : Routes(
+        route = "detalle/{nombre}/{pais}/{region}/{latitud}/{longitud}"
+    ) {
         fun crearRuta(
             nombre: String,
+            pais: String,
+            region: String,
             latitud: Double,
             longitud: Double
         ): String {
-            return "detalle/$nombre/$latitud/$longitud"
+            return "detalle/$nombre/$pais/$region/$latitud/$longitud"
         }
     }
 
